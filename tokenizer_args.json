@@ -1,0 +1,5 @@
+{
+    "model_name_or_path": "dccuchile/bert-base-spanish-wwm-cased",
+    "padding": "max_length",
+    "truncation": true
+}

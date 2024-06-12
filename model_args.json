@@ -1,0 +1,4 @@
+{
+    "model_name_or_path": "dccuchile/bert-base-spanish-wwm-cased",
+    "config": "dccuchile/bert-base-spanish-wwm-cased"
+}
