@@ -8,6 +8,7 @@ class TweetsPreprocessor():
         self.url_token = "url"
         self.hashtags_camelize = True
         self.emojis_to_text = True
+        self.remove_emojis_repetitions = True
         self.remove_multiple_end_lines = True
         self.normalize_laughing = True
         self.normalize_letter_repetitions = True
@@ -49,7 +50,7 @@ class TweetsPreprocessor():
             hashtag_regex = re.compile(r'#([A-Za-z0-9]+)')
             tweet = hashtag_regex.sub(lambda x: self._process_hashtag(x.groups()[0]), tweet)
         return tweet
-        
+
     def _replace_emojis(self, tweet, emoji_wrapper="emoji"):
         """
         Replace emojis with text
@@ -58,12 +59,16 @@ class TweetsPreprocessor():
         """
         tweet = emoji.demojize(tweet, language='es', delimiters=("|", "|"))
         if self.emojis_to_text:
+            if self.remove_emojis_repetitions:
+                tweet = re.sub(r'(\|[^|]+\|)(\1)+', r'\1', tweet)
             emoji_regex = re.compile(r"\|([^\|]+)\|")
             wrapper = f" {emoji_wrapper} ".replace("  ", " ")
             tweet = emoji_regex.sub(
                 lambda x: wrapper + " ".join(x.groups()[0].split("_")) + wrapper,
                 tweet
             )
+
+
         return tweet
 
     def _normalize_laughing(self, tweet):
